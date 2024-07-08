@@ -1,1 +1,1 @@
-# DjangoPractice2024
+# Django Iteration 2.24
