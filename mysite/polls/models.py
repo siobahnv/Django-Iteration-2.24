@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.contrib import admin
 
 
 class Question(models.Model):
@@ -9,6 +10,11 @@ class Question(models.Model):
     pub_date = models.DateTimeField("date published")
     def __str__(self):
         return self.question_text
+    @admin.display(
+        boolean=True,
+        ordering="pub_date",
+        description="Published recently?",
+    )
     def was_published_recently(self):
         # return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
         now = timezone.now()
@@ -29,7 +35,6 @@ class Question(models.Model):
         time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
-
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
